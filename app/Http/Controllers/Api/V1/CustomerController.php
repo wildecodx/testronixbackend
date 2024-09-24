@@ -47,11 +47,13 @@ class CustomerController extends Controller
 
             $admin = Admin::create($adminData);
 
-            if (!$admin) {
-                return response()->json(['error' => 'Failed to reserve a room'], 400);
+            if ($admin) {
+                return new CustomerResource($customer);
             }
 
-            return new CustomerResource($customer);
+
+
+            return response()->json(['error' => 'Failed to reserve a room'], 400);
         } catch (\Exception $e) {
 
             Log::error('Unable to reserve a room: ' . $e->getMessage());
